@@ -9,6 +9,7 @@ module.exports = {
     mode: 'development',
     context: resolve(__dirname, 'src'),
     entry: [
+        'whatwg-fetch',
         'webpack-dev-server/client?http://localhost:8080',
         // bundle the client for webpack-dev-server
         // and connect to the provided endpoint
