@@ -4,9 +4,10 @@ COPY startup /opt/startup
 COPY hostingstart.html /home/site/wwwroot/hostingstart.html
 COPY sshd_config /etc/ssh/
 
-COPY package*.json /home/site/wwwroot/
+WORKDIR /home/site/wwwroot
 
-RUN npm install
+COPY package*.json ./
+
 RUN echo "ipv6" >> /etc/modules
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories; \
@@ -29,7 +30,9 @@ RUN npm install -g pm2 \
      && npm install npm@latest -g \
      && chmod 755 /opt/startup/init_container.sh
 
-EXPOSE 2222 8080
+COPY . .
+
+EXPOSE 2222 8080 80
 
 ENV PM2HOME /pm2home
 
@@ -37,7 +40,5 @@ ENV PORT 8080
 ENV WEBSITE_ROLE_INSTANCE_ID localRoleInstance
 ENV WEBSITE_INSTANCE_ID localInstance
 ENV PATH ${PATH}:/home/site/wwwroot
-
-WORKDIR /home/site/wwwroot
 
 ENTRYPOINT ["/opt/startup/init_container.sh"]

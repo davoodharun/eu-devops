@@ -36,12 +36,10 @@ fi
 echo "$@" > /opt/startup/startupCommand
 node /opt/startup/generateStartupCommand.js
 chmod 755 /opt/startup/startupCommand
-STARTUPCOMMAND=$(cat /opt/startup/startupCommand)
-echo "Running $STARTUPCOMMAND"
-eval "exec $STARTUPCOMMAND" &
-
+npm start
 # Ensure this happens after /sbin/init
 ( sleep 5 ; /etc/init.d/sshd restart ) &
+eval "exec $STARTUPCOMMAND" &
 
 # Needs to start as PID 1 for openrc on alpine
 exec -c /sbin/init 
