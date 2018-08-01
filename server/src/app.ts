@@ -34,7 +34,7 @@ app.use(
   express.static(path.join(__dirname, "../../client/dist"), { maxAge: 31557600000 })
 );
 
-app.get("/api/hello", (req, res) => {
+app.get("/", (req, res) => {
   res.send({ express: "Hello From Express" });
 });
 
