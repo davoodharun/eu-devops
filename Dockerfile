@@ -1,25 +1,43 @@
-FROM node:6.9.3
+FROM node:10.1.0-alpine
 
-WORKDIR /usr/src/app
+COPY startup /opt/startup
+COPY hostingstart.html /home/site/wwwroot/hostingstart.html
+COPY sshd_config /etc/ssh/
 
-COPY package*.json ./
+COPY package*.json /home/site/wwwroot/
 
 RUN npm install
+RUN echo "ipv6" >> /etc/modules
 
-COPY . .
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories; \
+    echo "http://dl-cdn.alpinelinux.org/alpine/v3.6/main" >> /etc/apk/repositories;
 
-ENV SSH_PASSWD "root:Docker!"
+RUN npm install -g pm2 \
+     && mkdir -p /home/LogFiles \
+     && echo "root:Docker!" | chpasswd \
+     && echo "cd /home" >> /etc/bash.bashrc \
+     && apk update --no-cache \
+     && apk add openssh \
+     && apk add openrc \
+     && apk add vim \
+     && apk add curl \
+     && apk add wget \
+     && apk add tcptraceroute \
+     && apk add bash \
+     && cd /opt/startup \
+     && npm install \
+     && npm install npm@latest -g \
+     && chmod 755 /opt/startup/init_container.sh
 
-RUN apt-get update \
-        && apt-get install -y --no-install-recommends dialog \
-        && apt-get update \
-	&& apt-get install -y --no-install-recommends openssh-server \
-	&& echo "$SSH_PASSWD" | chpasswd 
+EXPOSE 2222 8080
 
-COPY sshd_config /etc/ssh/
-COPY init.sh /usr/local/bin/
+ENV PM2HOME /pm2home
 
-RUN chmod u+x /usr/local/bin/init.sh
-EXPOSE 80 8000 2222
+ENV PORT 8080
+ENV WEBSITE_ROLE_INSTANCE_ID localRoleInstance
+ENV WEBSITE_INSTANCE_ID localInstance
+ENV PATH ${PATH}:/home/site/wwwroot
 
-ENTRYPOINT ["init.sh"]
+WORKDIR /home/site/wwwroot
+
+ENTRYPOINT ["/opt/startup/init_container.sh"]
