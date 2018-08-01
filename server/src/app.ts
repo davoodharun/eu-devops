@@ -24,6 +24,7 @@ const app = express();
 
 
 // Express configuration
+console.log(process.env.PORT);
 app.set("port", process.env.PORT || 8080);
 app.use(compression());
 app.use(bodyParser.json());
@@ -31,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 
 app.use(
-  express.static(path.join(__dirname, "../../client/dist"), { maxAge: 31557600000 })
+  express.static(path.join(__dirname, "../../client/build"), { maxAge: 31557600000 })
 );
 
 app.get("/", (req, res) => {
