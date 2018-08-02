@@ -6,9 +6,7 @@ COPY sshd_config /etc/ssh/
 
 COPY package*.json /home/site/wwwroot/
 
-RUN npm install
-
-COPY . . 
+COPY . /home/site/wwwroot
 
 RUN echo "ipv6" >> /etc/modules
 
@@ -28,8 +26,6 @@ RUN npm install -g pm2 \
      && apk add tcptraceroute \
      && apk add bash \
      && cd /opt/startup \
-     && npm install \
-     && npm install npm@latest -g \
      && chmod 755 /opt/startup/init_container.sh
 
 EXPOSE 2222 8080 80
@@ -43,4 +39,9 @@ ENV PATH ${PATH}:/home/site/wwwroot
 
 WORKDIR /home/site/wwwroot
 
-ENTRYPOINT ["/opt/startup/init_container.sh"]
+RUN npm install \
+     && npm install npm@latest -g
+
+CMD ["npm", "start"]
+
+#ENTRYPOINT ["/opt/startup/init_container.sh"]
