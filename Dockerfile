@@ -41,7 +41,7 @@ WORKDIR /home/site/wwwroot
 
 RUN npm install \
      && npm install npm@latest -g
-
+RUN npm build
 CMD ["npm", "start"]
 
 #ENTRYPOINT ["/opt/startup/init_container.sh"]
