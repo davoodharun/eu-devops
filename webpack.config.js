@@ -5,7 +5,7 @@ const tsImportPluginFactory = require('ts-import-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-var BUILD_DIR = path.resolve(__dirname, './client/build');
+var BUILD_DIR = path.resolve(__dirname, './dist/client');
 var APP_DIR = path.resolve(__dirname, './client');
 
 const config = {

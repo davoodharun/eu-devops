@@ -32,10 +32,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 
 app.use(
-  express.static(path.join(__dirname, "../../client/build"), { maxAge: 31557600000 })
+  express.static(path.join(__dirname, "../../../dist/client"), { maxAge: 31557600000 })
 );
 
-app.get("/", (req, res) => {
+app.get("/api/authorize", (req, res) => {
   res.send({ express: "Hello From Express" });
 });
 
