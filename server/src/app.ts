@@ -19,7 +19,7 @@ const MongoStore = mongo(session);
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: ".env.example" });
 var VSO_CLIENT_ID = "A30D46D0-3F2C-4415-B9C9-082099AC137A";
-var VSO_CLIENT_SECRET = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIs";
+var VSO_CLIENT_SECRET = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im9PdmN6NU1fN3AtSGpJS2xGWHo5M3VfVjBabyJ9.eyJjaWQiOiJhMzBkNDZkMC0zZjJjLTQ0MTUtYjljOS0wODIwOTlhYzEzN2EiLCJjc2kiOiIwMWY3YWIxNC0zNjY1LTQwOGItYWRjZC01ZTc5MDIzYWUxMzYiLCJuYW1laWQiOiIwOTZhMzhiNS03NDg0LTZmNjctYjA3Mi1kMmIyNzczMjBkMTciLCJpc3MiOiJhcHAudnNzcHMudmlzdWFsc3R1ZGlvLmNvbSIsImF1ZCI6ImFwcC52c3Nwcy52aXN1YWxzdHVkaW8uY29tIiwibmJmIjoxNTMzMjM5MDkzLCJleHAiOjE2OTEwMDU0OTN9.PPTWsRS9VHAAuV60pFBnMuiGAuGNA6LBkqOLqHpSQRvGVBibcL4T_ylitFMDUGa8GFnTDLbndRj91amJk2lMRgOY93Pe_bjIAd50enOd6ri2zM7J_XTakvxH1TkQn4Ly6C7UuXlJVPfBAi8m7KPBKaFVltP-NRlBFqwsgC8S5XZfsTRGjTQHaxnixnVtVtwqFr1dcuPMLmTIhfA_b6VM7vT5gpBzvMYp87PQD8rgqR5ejnspGwFbDeF34P6tUMAMfyqolqTI6BsePHHlf9g1ITXnbTNp_3Z5hcuyu8Xmos6qYbPq76x25TbOZ1zkKIpU4N-r5ousq7gxN7KQH11KZw";
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -67,7 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/api/auth/vso',
-  passport.authenticate('vso', { scope: ['wl.signin', 'wl.basic'] }),
+  passport.authenticate('vso'),
   function(req, res){
 
     // The request will be redirected to Visual Studio Online for authentication, so
