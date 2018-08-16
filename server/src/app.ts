@@ -62,10 +62,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(session({ secret: 'keyboard cat' }));
+import * as vsts from 'vso-node-api';
+import * as ba from 'vso-node-api/BuildApi';
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
+let collectionUrl = "https://exelontfs.visualstudio.com/EUCOMS";
+
+// ideally from config
+let token: string = "jayqzsczfo62opzky66s4pxknp7g7c63hwbrzkgbholuk5uh66fa"; 
+
+let authHandler = vsts.getPersonalAccessTokenHandler(token); 
+let connection = new vsts.WebApi(collectionUrl, authHandler);    
+
+import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
+
 
 app.get('/api/auth/vso',
   passport.authenticate('vso'),
@@ -83,11 +95,22 @@ function(req, res) {
 
 app.get('/api/test',
 function(req, res) {
-  request('https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3',  (err, res, body) => {
-    if (err) { return console.log(err); }
-      console.log(body.url);
-      console.log(body.explanation);
-      });
+  // request('https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3',  (err, res, body) => {
+  //   if (err) { return console.log(err); }
+  //     console.log(body.url);
+  //     console.log(body.explanation);
+  //     });
+  async function run() {
+    let vstsBuild: ba.IBuildApi = await connection.getBuildApi();
+    let project: string = 'myProject';
+    let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
+
+    defs.forEach((defRef: bi.DefinitionReference) => {
+        console.log(defRef.name + ' (' + defRef.id + ')');
+    });    
+}
+
+run();
 });
 app.use(function(req, res, next) {
   console.log('laksdf')

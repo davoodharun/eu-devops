@@ -72,6 +72,7 @@
     "redux-thunk": "2.3.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
+    "vso-node-api": "^6.5.0",
     "whatwg-fetch": "^2.0.4",
     "winston": "^2.4.0"
   },
