@@ -84,15 +84,7 @@ function(req, res) {
 app.get('/api/test',
 function(req, res) {
   https.get('https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3', (resp) => {
-    let data = '';
-    resp.on('data', (chunk) => {
-      data += chunk;
-    });
-  
-    // The whole response has been received. Print out the result.
-    resp.on('end', () => {
-      console.log(JSON.parse(data));
-    });
+    console.log(res);
   }).on("error", (err) => {
     console.log(err)
   })
