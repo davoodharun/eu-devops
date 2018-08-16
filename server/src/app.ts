@@ -68,7 +68,7 @@ import * as ba from 'vso-node-api/BuildApi';
 // persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
-let collectionUrl = "https://exelontfs.visualstudio.com/EUCOMS";
+let collectionUrl = "https://exelontfs.visualstudio.com/defaultcollection";
 
 // ideally from config
 let token: string = "jayqzsczfo62opzky66s4pxknp7g7c63hwbrzkgbholuk5uh66fa"; 
@@ -102,7 +102,7 @@ function(req, res) {
   //     });
   async function run() {
     let vstsBuild: ba.IBuildApi = await connection.getBuildApi();
-    let project: string = 'myProject';
+    let project: string = 'EUCOMS';
     let defs: bi.DefinitionReference[] = await vstsBuild.getDefinitions(project);
 
     defs.forEach((defRef: bi.DefinitionReference) => {
