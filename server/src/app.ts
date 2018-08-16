@@ -9,7 +9,7 @@ import mongo from "connect-mongo";
 import flash from "express-flash";
 import path from "path";
 import mongoose from "mongoose";
-import https from "https";
+import request from "request";
 import passport from "passport";
 import expressValidator from "express-validator";
 import bluebird from "bluebird";
@@ -83,11 +83,11 @@ function(req, res) {
 
 app.get('/api/test',
 function(req, res) {
-  https.get('https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3', (resp) => {
-    console.log(res);
-  }).on("error", (err) => {
-    console.log(err)
-  })
+  request('https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3',  (err, res, body) => {
+    if (err) { return console.log(err); }
+      console.log(body.url);
+      console.log(body.explanation);
+      });
 });
 app.use(function(req, res, next) {
   console.log('laksdf')
