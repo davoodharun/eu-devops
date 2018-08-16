@@ -83,7 +83,7 @@ function(req, res) {
 
 app.get('/api/test',
 function(req, res) {
-  https.get('GET https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3', (resp) => {
+  https.get('https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3', (resp) => {
     let data = '';
     resp.on('data', (chunk) => {
       data += chunk;
