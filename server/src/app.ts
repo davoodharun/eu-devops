@@ -67,7 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/api/auth/vso',
-  passport.authenticate('vso'),
+  passport.authenticate('vso', { scope: ['wl.signin', 'wl.basic'] }),
   function(req, res){
 
     // The request will be redirected to Visual Studio Online for authentication, so
