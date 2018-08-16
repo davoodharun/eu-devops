@@ -9,6 +9,7 @@ import mongo from "connect-mongo";
 import flash from "express-flash";
 import path from "path";
 import mongoose from "mongoose";
+import https from "https";
 import passport from "passport";
 import expressValidator from "express-validator";
 import bluebird from "bluebird";
@@ -30,13 +31,13 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new VsoStrategy({
   clientID: VSO_CLIENT_ID,
   clientSecret: VSO_CLIENT_SECRET,
-  callbackURL: "https://eu-devops.azurewebsites.net/api/auth/callback",
+  callbackURL: "https://168.61.187.177/api/auth/callback",
   scope: ["vso.build","vso.code","vso.connected_server","vso.dashboards","vso.entitlements","vso.extension","vso.extension.data","vso.gallery","vso.graph","vso.identity","vso.loadtest","vso.machinegroup_manage","vso.memberentitlementmanagement","vso.notification_diagnostics","vso.packaging","vso.project","vso.release","vso.security_manage","vso.serviceendpoint","vso.symbols","vso.taskgroups_read","vso.test","vso.wiki","vso.work_write"],
   state: true
 },
 function(accessToken: string, refreshToken: string, profile: any, done:any) {
   // asynchronous verification, for effect...\
-  console.log('here in call')
+  console.log(accessToken, profile)
   process.nextTick(function () {
     
     // To keep the example simple, the user's Visual Studio Online profile is returned
@@ -82,7 +83,17 @@ function(req, res) {
 
 app.get('/api/test',
 function(req, res) {
-  console.log('here')
+  https.get('GET https://exelontfs.vsrm.visualstudio.com/EUCOMS/_apis/release/definitions/16?api-version=4.1-preview.3', (resp) => {
+    let data = '';
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+  
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      console.log(JSON.parse(data).explanation);
+    });
+  })
 });
 app.use(function(req, res, next) {
   console.log('laksdf')
