@@ -91,8 +91,10 @@ function(req, res) {
   
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
-      console.log(JSON.parse(data).explanation);
+      console.log(JSON.parse(data));
     });
+  }).on("error", (err) => {
+    console.log(err)
   })
 });
 app.use(function(req, res, next) {
